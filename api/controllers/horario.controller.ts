@@ -1,13 +1,20 @@
 import { Request, Response } from "express"
 import Agendamento from "../models/Agendamento"
 import Horario from "../models/Horario"
-import { sliceMinutes } from "../util/index"
+import { hourToMinutes, sliceMinutes } from "../util/index"
 
 const horario = {
   criar: async (req: Request, res: Response): Promise<void> => {
     const { dias, inicio, fim } = req.body
 
     const horarios = sliceMinutes(inicio, fim)
+
+    const existeHorario = await Horario.find()
+
+    if (existeHorario.length) {
+      res.status(400).send({ message: "já existem horários cadastrados" })
+    }
+
     try {
       await Horario.create({
         dias,
@@ -78,7 +85,11 @@ const horario = {
   },
   datasDisponiveis: async (_req: Request, res: Response): Promise<void> => {
     const dataAtual = new Date()
-
+    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br")
+    const dataAtualFixaHora = dataAtual.toLocaleTimeString("pt-br", {
+      hour: "numeric",
+      minute: "numeric",
+    })
     const agenda = []
 
     const horario = await Horario.findOne()
@@ -136,17 +147,35 @@ const horario = {
             })
           }
         })
+
+        const listaHorarios = horariosDoDia.length
+          ? horariosDoDia
+          : horario.horarios
+
         agenda.push({
-          [dateFormatPtBr]: horariosDoDia.length
-            ? horariosDoDia
-            : horario.horarios,
+          [dateFormatPtBr]: listaHorarios,
         })
       }
 
       dataAtual.setHours(24)
     }
 
-    res.send(agenda)
+    const updateAgenda = agenda.map((obj) => {
+      // eslint-disable-next-line no-prototype-builtins
+      if (obj.hasOwnProperty(dataAtualFixa)) {
+        return {
+          [dataAtualFixa]: obj[dataAtualFixa].map((h: string) => {
+            const horaInt = hourToMinutes(h)
+            const horaAtualInt = hourToMinutes(dataAtualFixaHora)
+            return horaInt <= horaAtualInt ? "-" : h
+          }),
+        }
+      }
+
+      return obj
+    })
+
+    res.send(updateAgenda)
   },
 }
 
