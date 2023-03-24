@@ -1,4 +1,4 @@
-import { Date, model, Schema, Types } from "mongoose"
+import { model, Schema, Types } from "mongoose"
 
 export interface IAgendamento {
   servico: Types.ObjectId
@@ -10,7 +10,18 @@ const agendamentoSchema = new Schema<IAgendamento>(
   {
     servico: { type: Schema.Types.ObjectId, ref: "Servico" },
     usuario: { type: Schema.Types.ObjectId, ref: "Usuario" },
-    data: { type: Date, required: true },
+    data: {
+      type: Date,
+      transform: (v: Date): string =>
+        v.toLocaleDateString("pt-br", {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        }),
+      required: true,
+    },
   },
   { timestamps: true },
 )
