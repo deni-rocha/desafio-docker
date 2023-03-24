@@ -1,8 +1,13 @@
 import "dotenv/config"
 import express from "express"
-import router from "./routes/index"
 import verificarToken from "./middlewares/verificarToken/index"
 import loaders from "./loaders/index"
+
+// importação de rotas
+import usuario from "./routes/usuario"
+import servico from "./routes/servico"
+import agendamento from "./routes/agendamento"
+import horario from "./routes/horario"
 
 // configurações
 const app = express()
@@ -12,7 +17,10 @@ app.use(express.json())
 loaders.startDB()
 
 // rotas
-app.use("/api", verificarToken, router)
+app.use("/api/usuario", verificarToken, usuario)
+app.use("/api/servico", verificarToken, servico)
+app.use("/api/agendamento", verificarToken, agendamento)
+app.use("/api/horario", verificarToken, horario)
 
 // servidor
 const porta = process.env.PORT || 3030
