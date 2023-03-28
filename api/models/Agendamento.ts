@@ -15,8 +15,8 @@ const agendamentoSchema = new Schema<IAgendamento>(
       transform: (v: Date): string =>
         v.toLocaleDateString("pt-br", {
           year: "numeric",
-          month: "numeric",
-          day: "numeric",
+          month: "2-digit",
+          day: "2-digit",
           hour: "numeric",
           minute: "numeric",
         }),

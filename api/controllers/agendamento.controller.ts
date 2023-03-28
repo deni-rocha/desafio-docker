@@ -30,7 +30,7 @@ const agendamento = {
   listar: async function (req: Request, res: Response): Promise<void> {
     if (Object.keys(req.query).length > 0) {
       // Se houver query string
-      busca(req, res)
+      return busca(req, res)
     }
     // sem query string
     try {
@@ -99,10 +99,23 @@ async function busca(req: Request, res: Response): Promise<void> {
   const valor = Object.values(req.query)[0]
 
   try {
-    const lista = await Agendamento.find({ [atrib]: valor })
+    const lista = await Agendamento.find({
+      [atrib]: { $gte: valor },
+    })
       .populate("usuario")
       .populate("servico")
-    res.send(lista)
+
+    const newList = lista.filter((obj) => {
+      const result = obj.data.toLocaleDateString("en", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+
+      return result === valor
+    })
+
+    res.status(200).send(newList)
   } catch (erro) {
     console.log(erro)
     res.status(500).end()
