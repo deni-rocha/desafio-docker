@@ -23,7 +23,7 @@
   },
   "scripts": {
     "dev": "nodemon --ext .ts --watch api --exec ts-node ./api/index.ts",
-    "start": "node public/api/index.js",
+    "start": "node ./dist/api/index.js",
     "prebuild": "npm run lint",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .ts --ext .mts",

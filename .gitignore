@@ -14,6 +14,7 @@ coverage
 
 # Transpiled files
 build/
+dist/
 
 # JetBrains IDEs
 .idea/
