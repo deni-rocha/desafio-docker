@@ -13,6 +13,7 @@ const horario = {
 
     if (existeHorario.length) {
       res.status(400).send({ message: "já existem horários cadastrados" })
+      return
     }
 
     try {
@@ -90,7 +91,7 @@ const horario = {
       hour: "numeric",
       minute: "numeric",
     })
-    const agenda = []
+    const agenda = [{}]
 
     const horario = await Horario.findOne()
     // verificar se já existe agendamento marcado para esse horário
@@ -105,7 +106,7 @@ const horario = {
       })
 
       // verifica se o dia da semana está cadastrado
-      const diaIncluso = horario.dias.includes(weekdayName)
+      const diaIncluso = horario?.dias.includes(weekdayName)
 
       if (diaIncluso) {
         const opcoesFormato: Intl.DateTimeFormatOptions = {
@@ -132,7 +133,7 @@ const horario = {
               { hour: "numeric", minute: "numeric" },
             )
 
-            horario.horarios.forEach((h) => {
+            horario?.horarios.forEach((h) => {
               // para evitar o duplicamento das horas no array
               if (horariosDoDia.length === horario.horarios.length) {
                 const novoHorariosDoDia = horariosDoDia.map((hora) =>
@@ -150,7 +151,7 @@ const horario = {
 
         const listaHorarios = horariosDoDia.length
           ? horariosDoDia
-          : horario.horarios
+          : horario?.horarios
 
         agenda.push({
           [dateFormatPtBr]: listaHorarios,
@@ -174,6 +175,9 @@ const horario = {
 
       return obj
     })
+
+    // remove o primeiro elemento do array que neste caso é um objeto vazio
+    updateAgenda.shift()
 
     res.send(updateAgenda)
   },
