@@ -1,13 +1,13 @@
 import "dotenv/config"
 import express from "express"
-import verificarToken from "./middlewares/verificarToken/index"
-import loaders from "./loaders/index"
+import verificarToken from "../src/middlewares/verificarToken"
+import loaders from "../src/loaders"
 
 // importação de rotas
-import usuario from "./routes/usuario"
-import servico from "./routes/servico"
-import agendamento from "./routes/agendamento"
-import horario from "./routes/horario"
+import usuario from "../src/routes/usuario"
+import servico from "../src/routes/servico"
+import agendamento from "../src/routes/agendamento"
+import horario from "../src/routes/horario"
 
 // configurações
 const app = express()

@@ -5,7 +5,7 @@
     "lib": ["ES2022", "DOM"],
     "moduleResolution": "Node16",
     "rootDir": ".",
-    "outDir": "dist",
+    "outDir": "public",
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "alwaysStrict": true,
@@ -19,6 +19,6 @@
     "noImplicitThis": false,
     "strictNullChecks": false
   },
-  "include": ["api/**/*.ts"],
-  "exclude": ["node_modules", "build"]
+  "include": ["api/**/*.ts", "src/**/*.ts"],
+  "exclude": ["node_modules", "public"]
 }
