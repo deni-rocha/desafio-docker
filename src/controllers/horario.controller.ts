@@ -85,11 +85,15 @@ const horario = {
     }
   },
   datasDisponiveis: async (_req: Request, res: Response): Promise<void> => {
+    const timeZoneData = { timeZone: "America/Sao_Paulo" }
     const dataAtual = new Date()
-    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br")
+    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br", {
+      ...timeZoneData,
+    })
     const dataAtualFixaHora = dataAtual.toLocaleTimeString("pt-br", {
       hour: "numeric",
       minute: "numeric",
+      ...timeZoneData,
     })
     const agenda = [{}]
 
@@ -103,6 +107,7 @@ const horario = {
       let horariosDoDia: string[] = []
       const weekdayName = dataAtual.toLocaleDateString("pt-br", {
         weekday: "long",
+        ...timeZoneData,
       })
 
       // verifica se o dia da semana está cadastrado
@@ -113,6 +118,7 @@ const horario = {
           day: "numeric",
           month: "numeric",
           year: "numeric",
+          ...timeZoneData,
         }
         const dateFormatEn = dataAtual.toLocaleDateString("en", opcoesFormato)
 
