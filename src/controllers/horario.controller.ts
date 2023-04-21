@@ -118,14 +118,13 @@ const horario = {
           day: "numeric",
           month: "numeric",
           year: "numeric",
-          ...timeZoneData,
         }
         const dateFormatEn = dataAtual.toLocaleDateString("en", opcoesFormato)
 
-        const dateFormatPtBr = dataAtual.toLocaleDateString(
-          "pt-br",
-          opcoesFormato,
-        )
+        const dateFormatPtBr = dataAtual.toLocaleDateString("pt-br", {
+          ...opcoesFormato,
+          ...timeZoneData,
+        })
 
         existeAgendamento.forEach((objAgendamento) => {
           const dateAgendamentoEn = objAgendamento.data.toLocaleDateString(
