@@ -103,15 +103,19 @@ const horario = {
       ...timeZoneData,
     })
 
+    // agenda que terá os próximos 7 dias com seus respectivos horários disponiveis
     const agenda = [{}]
+    const quantidadeDia = 7
 
+    // obtém os horarios cadastrados no banco
     const horario = await Horario.findOne()
+
     // verificar se já existe agendamento marcado para esse horário
     const existeAgendamento = await Agendamento.find({
       data: { $gte: dataAtual },
     })
 
-    while (agenda.length <= 7) {
+    while (agenda.length <= quantidadeDia) {
       let horariosDoDia: string[] = []
       const weekdayName = dataAtual.toLocaleDateString("pt-br", {
         weekday: "long",
