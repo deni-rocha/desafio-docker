@@ -119,7 +119,6 @@ const horario = {
       let horariosDoDia: string[] = []
       const weekdayName = dataAtual.toLocaleDateString("pt-br", {
         weekday: "long",
-        ...timeZoneData,
       })
 
       // verifica se o dia da semana está cadastrado
@@ -135,7 +134,6 @@ const horario = {
 
         const dateFormatPtBr = dataAtual.toLocaleDateString("pt-br", {
           ...opcoesFormato,
-          ...timeZoneData,
         })
 
         existeAgendamento.forEach((objAgendamento) => {
