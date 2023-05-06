@@ -85,16 +85,24 @@ const horario = {
     }
   },
   datasDisponiveis: async (_req: Request, res: Response): Promise<void> => {
+    // é preciso pegar o time zone correto, pois o servido atual da aplicação está no exterior
     const timeZoneData = { timeZone: "America/Sao_Paulo" }
+
+    // armazena data atual
     const dataAtual = new Date()
+
+    // transforma data atual em uma string, formato pt-br dd/mm/yyyy
     const dataAtualFixa = dataAtual.toLocaleDateString("pt-br", {
       ...timeZoneData,
     })
+
+    // obtém o horario atual, formato 00:00
     const dataAtualFixaHora = dataAtual.toLocaleTimeString("pt-br", {
       hour: "numeric",
       minute: "numeric",
       ...timeZoneData,
     })
+
     const agenda = [{}]
 
     const horario = await Horario.findOne()
