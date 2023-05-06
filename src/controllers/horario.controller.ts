@@ -89,18 +89,20 @@ const horario = {
     const timeZoneData = { timeZone: "America/Sao_Paulo" }
 
     // armazena data atual
-    const dataAtual = new Date()
+    const dataNow = new Date()
+
+    // data atual especificamente com o timezone do brasil
+    const dataAtual = new Date(
+      dataNow.toLocaleString("en-US", { ...timeZoneData }),
+    )
 
     // transforma data atual em uma string, formato pt-br dd/mm/yyyy
-    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br", {
-      ...timeZoneData,
-    })
+    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br", {})
 
     // obtém o horario atual, formato 00:00
     const dataAtualFixaHora = dataAtual.toLocaleTimeString("pt-br", {
       hour: "numeric",
       minute: "numeric",
-      ...timeZoneData,
     })
 
     // agenda que terá os próximos 7 dias com seus respectivos horários disponiveis
@@ -130,15 +132,22 @@ const horario = {
           month: "numeric",
           year: "numeric",
         }
-        const dateFormatEn = dataAtual.toLocaleDateString("en", opcoesFormato)
 
+        // data com o formato em inglês
+        const dateFormatEn = dataAtual.toLocaleDateString(
+          "en-US",
+          opcoesFormato,
+        )
+
+        // data com o formato brasileiro
         const dateFormatPtBr = dataAtual.toLocaleDateString("pt-br", {
           ...opcoesFormato,
         })
 
         existeAgendamento.forEach((objAgendamento) => {
+          // formatando a data para string
           const dateAgendamentoEn = objAgendamento.data.toLocaleDateString(
-            "en",
+            "en-US",
             opcoesFormato,
           )
 
@@ -164,18 +173,23 @@ const horario = {
           }
         })
 
+        // caso não tenha horário agendado no dia, adicionamos o horário completo sem alterações
         const listaHorarios = horariosDoDia.length
           ? horariosDoDia
           : horario?.horarios
 
+        // adicionando os horarios na agenda
         agenda.push({
+          // criando objeto com data e horas
           [dateFormatPtBr]: listaHorarios,
         })
       }
 
+      // atualiza a data
       dataAtual.setHours(24)
     }
 
+    // atualiza a agenda comparando com o horário atual
     const updateAgenda = agenda.map((obj) => {
       // eslint-disable-next-line no-prototype-builtins
       if (obj.hasOwnProperty(dataAtualFixa)) {
