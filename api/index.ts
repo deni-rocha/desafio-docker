@@ -1,5 +1,6 @@
 import "dotenv/config"
 import express from "express"
+import cors from "cors"
 import verificarToken from "../src/middlewares/verificarToken"
 import loaders from "../src/loaders"
 
@@ -11,6 +12,7 @@ import horario from "../src/routes/horario"
 
 // configurações
 const app = express()
+app.use(cors())
 app.use(express.json())
 
 // conectar banco de dados
