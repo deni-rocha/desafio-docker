@@ -3,7 +3,8 @@ import Servico, { IServico } from "../models/Servico"
 
 const servico = {
   criar: async (req: Request, res: Response): Promise<void> => {
-    const { nome, descricao, preco, duracao }: IServico = req.body
+    const { nome, descricao, preco, duracao, colaboradores }: IServico =
+      req.body
 
     if (nome.length < 4)
       res.status(202).send({ msg: "por favor preencha os dados" })
@@ -13,6 +14,7 @@ const servico = {
         descricao,
         preco,
         duracao,
+        colaboradores,
       })
       // HTTP Status 201: Created
       res.status(201).end()
@@ -24,7 +26,8 @@ const servico = {
   },
   listar: async function (_req: Request, res: Response): Promise<void> {
     try {
-      const lista = await Servico.find({})
+      const lista = await Servico.find({}).populate("colaboradores")
+
       res.send(lista) // HTTP 200 implícito
     } catch (erro) {
       console.log(erro)
