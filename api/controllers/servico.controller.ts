@@ -69,7 +69,7 @@ const servico = {
   excluir: async function (req: Request, res: Response): Promise<void> {
     try {
       const id = req.body._id
-      const obj = await Servico.findByIdAndUpdate(id, { status: "E" })
+      const obj = await Servico.findByIdAndDelete(id)
       if (obj) {
         res.status(204).end()
       } else {

@@ -8,7 +8,6 @@ const colaborador = {
       email,
       senha,
       sexo,
-      status,
       dataDeNascimento,
       foto,
       horario,
@@ -31,7 +30,6 @@ const colaborador = {
         email,
         senha,
         sexo,
-        status,
         dataDeNascimento,
         foto,
         horario,
@@ -89,9 +87,7 @@ const colaborador = {
       const id = req.body._id
 
       // exclusão lógica
-      const obj = await Colaborador.findByIdAndUpdate(id, {
-        $set: { status: "I" },
-      })
+      const obj = await Colaborador.findByIdAndDelete(id)
       if (obj) {
         res.status(204).end()
       } else {

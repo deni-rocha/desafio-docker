@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express"
 import { verify } from "jsonwebtoken"
 
-function verificarToken(
+// libera acesso apenas a colaboradores
+function verifyTokenAdmin(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -16,7 +17,7 @@ function verificarToken(
   }
 
   try {
-    const secret = process.env.SECRET
+    const secret = process.env.SECRET_COLABORADOR
 
     verify(token, secret)
 
@@ -26,4 +27,4 @@ function verificarToken(
   }
 }
 
-export default verificarToken
+export default verifyTokenAdmin

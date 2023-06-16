@@ -9,7 +9,6 @@ export interface IColaborador {
   sexo: string
   horario: Schema.Types.ObjectId
   dataDeNascimento: string
-  status: string
 }
 
 const funcionarioSchema = new Schema<IColaborador>({
@@ -20,8 +19,7 @@ const funcionarioSchema = new Schema<IColaborador>({
   horario: { type: Schema.Types.ObjectId },
   foto: { type: String, required: true, default: "" },
   dataDeNascimento: { type: String, required: true },
-  permissao: { type: String, enum: ["ADMIN", "SUPER"], required: true },
-  status: { type: String, enum: ["A", "I"], default: "A" },
+  permissao: { type: String, enum: ["NORMAL", "ADMIN"], required: true },
 })
 
 const User = model<IColaborador>("Colaborador", funcionarioSchema)

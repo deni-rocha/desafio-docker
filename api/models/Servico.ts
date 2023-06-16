@@ -6,7 +6,6 @@ export interface IServico {
   preco: number
   duracao: number
   colaboradores: [Schema.Types.ObjectId]
-  status: string
 }
 
 const servicoSchema = new Schema<IServico>({
@@ -15,12 +14,6 @@ const servicoSchema = new Schema<IServico>({
   preco: { type: Number, required: true },
   duracao: { type: Number, required: true },
   colaboradores: [{ type: Schema.Types.ObjectId, ref: "Colaborador" }],
-  status: {
-    type: String,
-    enum: ["A", "I", "E"],
-    default: "A",
-    required: true,
-  },
 })
 
 const Servico = model<IServico>("Servico", servicoSchema)
