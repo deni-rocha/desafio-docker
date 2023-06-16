@@ -1,48 +1,7 @@
 import { Request, Response } from "express"
-import Colaborador, { IColaborador } from "../models/Colaborador"
+import Colaborador from "../models/Colaborador"
 
 const colaborador = {
-  criar: async (req: Request, res: Response): Promise<void> => {
-    const {
-      nome,
-      email,
-      senha,
-      sexo,
-      dataDeNascimento,
-      foto,
-      horario,
-      permissao,
-    }: IColaborador = req.body
-
-    // verificar se já existe agendamento marcado para esse horário
-    const existeColaborador = await Colaborador.findOne({ email })
-
-    if (existeColaborador) {
-      console.log(existeColaborador)
-      res
-        .status(400)
-        .send({ msg: "colaborador com esse email já foi cadastrado!" })
-      return
-    }
-    try {
-      await Colaborador.create({
-        nome,
-        email,
-        senha,
-        sexo,
-        dataDeNascimento,
-        foto,
-        horario,
-        permissao,
-      })
-      // HTTP Status 201: Created
-      res.status(201).end()
-    } catch (erro) {
-      console.log(erro)
-      // HTTP 500: Internal Server Error
-      res.status(500).send(erro)
-    }
-  },
   listar: async (req: Request, res: Response): Promise<void> => {
     // verifica se usuário existe
 
