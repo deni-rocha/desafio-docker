@@ -9,13 +9,6 @@ const horario = {
 
     const horarios = sliceMinutes(inicio, fim)
 
-    const existeHorario = await Horario.find()
-
-    if (existeHorario.length) {
-      res.status(400).send({ message: "já existem horários cadastrados" })
-      return
-    }
-
     try {
       await Horario.create({
         dias,
@@ -84,22 +77,14 @@ const horario = {
       res.status(500).send(erro)
     }
   },
-  datasDisponiveis: async (_req: Request, res: Response): Promise<void> => {
-    // é preciso pegar o time zone correto, pois o servido atual da aplicação está no exterior
-    const timeZoneData = { timeZone: "America/Sao_Paulo" }
 
-    // armazena data atual
-    const dataNow = new Date()
+  datasDisponiveis: async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id
 
-    // data atual especificamente com o timezone do brasil
-    const dataAtual = new Date(
-      dataNow.toLocaleString("en-US", { ...timeZoneData }),
-    )
+    if (!id) res.json({ message: "necessário passar o id" })
 
-    // transforma data atual em uma string, formato pt-br dd/mm/yyyy
-    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br", {})
-
-    // obtém o horario atual, formato 00:00
+    const dataAtual = new Date()
+    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br")
     const dataAtualFixaHora = dataAtual.toLocaleTimeString("pt-br", {
       hour: "numeric",
       minute: "numeric",
@@ -110,7 +95,7 @@ const horario = {
     const quantidadeDia = 7
 
     // obtém os horarios cadastrados no banco
-    const horario = await Horario.findOne()
+    const horario = await Horario.findById(id)
 
     // verificar se já existe agendamento marcado para esse horário
     const existeAgendamento = await Agendamento.find({
