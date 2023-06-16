@@ -1,14 +1,14 @@
 import "dotenv/config"
 import express from "express"
 
-import loaders from "./loaders/index"
+import loaders from "../src/loaders/index"
 
 // importação de rotas
-import usuario from "./routes/usuario"
-import servico from "./routes/servico"
-import agendamento from "./routes/agendamento"
-import horario from "./routes/horario"
-import colaborador from "./routes/colaborador"
+import usuario from "../src/routes/usuario"
+import servico from "../src/routes/servico"
+import agendamento from "../src/routes/agendamento"
+import horario from "../src/routes/horario"
+import colaborador from "../src/routes/colaborador"
 import cors from "cors"
 
 // configurações
