@@ -3,6 +3,8 @@ import { model, Schema, Types } from "mongoose"
 export interface IAgendamento {
   servico: Types.ObjectId
   usuario: Types.ObjectId
+  funcionario: Types.ObjectId
+  colaborador: Types.ObjectId
   data: Date
 }
 
@@ -10,6 +12,7 @@ const agendamentoSchema = new Schema<IAgendamento>(
   {
     servico: { type: Schema.Types.ObjectId, ref: "Servico" },
     usuario: { type: Schema.Types.ObjectId, ref: "Usuario" },
+    colaborador: { type: Schema.Types.ObjectId, ref: "Colaborador" },
     data: {
       type: Date,
       transform: (v: Date): string =>

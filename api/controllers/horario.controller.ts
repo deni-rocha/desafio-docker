@@ -9,13 +9,6 @@ const horario = {
 
     const horarios = sliceMinutes(inicio, fim)
 
-    const existeHorario = await Horario.find()
-
-    if (existeHorario.length) {
-      res.status(400).send({ message: "já existem horários cadastrados" })
-      return
-    }
-
     try {
       await Horario.create({
         dias,
@@ -84,7 +77,11 @@ const horario = {
       res.status(500).send(erro)
     }
   },
-  datasDisponiveis: async (_req: Request, res: Response): Promise<void> => {
+  datasDisponiveis: async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id
+
+    if (!id) res.json({ message: "necessário passar o id" })
+
     const dataAtual = new Date()
     const dataAtualFixa = dataAtual.toLocaleDateString("pt-br")
     const dataAtualFixaHora = dataAtual.toLocaleTimeString("pt-br", {
@@ -93,7 +90,8 @@ const horario = {
     })
     const agenda = [{}]
 
-    const horario = await Horario.findOne()
+    const horario = await Horario.findById(id)
+
     // verificar se já existe agendamento marcado para esse horário
     const existeAgendamento = await Agendamento.find({
       data: { $gte: dataAtual },
