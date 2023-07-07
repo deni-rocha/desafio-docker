@@ -1,22 +1,43 @@
 import { Request, Response } from "express"
-import Agendamento from "../models/Agendamento"
+import Agendamento, { IAgendamento } from "../models/Agendamento"
 
 const agendamento = {
   criar: async (req: Request, res: Response): Promise<void> => {
-    const { data, servico, usuario } = req.body
+    const { data, servico, usuario, colaborador }: IAgendamento = req.body
 
     // verificar se já existe agendamento marcado para esse horário
     const existeAgendamento = await Agendamento.findOne({ data })
 
+    if (!colaborador) {
+      res.status(400).send({ msg: "necessário informar o colaborador" })
+      return
+    }
+
+    if (!data) {
+      res.status(400).send({ msg: "necessário informar a data" })
+      return
+    }
+
+    if (!servico) {
+      res.status(400).send({ msg: "necessário informar o serviço" })
+      return
+    }
+
+    if (!usuario) {
+      res.status(400).send({ msg: "necessário informar o usuário" })
+      return
+    }
+
     if (existeAgendamento) {
-      console.log(existeAgendamento)
       res.status(400).send({ msg: "agendamento já existente" })
       return
     }
+
     try {
       await Agendamento.create({
-        servico,
         usuario,
+        servico,
+        colaborador,
         data,
       })
       // HTTP Status 201: Created
@@ -39,6 +60,7 @@ const agendamento = {
       const lista = await Agendamento.find({})
         .populate("usuario")
         .populate("servico")
+        .populate("colaborador")
 
       res.send(lista) // HTTP 200 implícito
     } catch (erro) {

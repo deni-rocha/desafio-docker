@@ -3,7 +3,6 @@ import { model, Schema, Types } from "mongoose"
 export interface IAgendamento {
   servico: Types.ObjectId
   usuario: Types.ObjectId
-  funcionario: Types.ObjectId
   colaborador: Types.ObjectId
   data: Date
 }
