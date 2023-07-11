@@ -84,10 +84,13 @@ const horario = {
     if (!id) res.json({ message: "necessário passar o id" })
 
     const dataAtual = new Date()
-    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br")
+    const dataAtualFixa = dataAtual.toLocaleDateString("pt-br", {
+      timeZone: "America/Sao_Paulo",
+    })
     const dataAtualFixaHora = dataAtual.toLocaleTimeString("pt-br", {
       hour: "numeric",
       minute: "numeric",
+      timeZone: "America/Sao_Paulo",
     })
 
     // agenda que terá os próximos 7 dias com seus respectivos horários disponiveis
