@@ -14,15 +14,7 @@ import cors from "cors"
 // configurações
 const app = express()
 app.use(express.json())
-
-const corsOption = {
-  origin: ["http://localhost:3000"],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-}
-
-app.use(cors(corsOption))
+app.use(cors())
 
 // conectar banco de dados
 loaders.startDB()
