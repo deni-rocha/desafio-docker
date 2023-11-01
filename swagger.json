@@ -1,0 +1,110 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "tittle": "Desafio Generation",
+    "description": "API para o desafio Generation",
+    "contact": {
+      "name": "Denilson Rocha",
+      "email": "denilsondevlinux@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "tags": ["Alunos"],
+    "/api/aluno/": {
+      "get": {
+        "description": "Obtém todos os alunos cadastrados",
+        "responses": {
+          "200": {
+            "description": "retorna um array de Alunos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RequestAluno"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Registra um aluno",
+        "requestBody": {
+          "description": "dados necessários para registrar um aluno",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAluno"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseCreatedAluno"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Os requisitos de registro não foram atendidos, verifique os campos."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RequestAluno": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "description": "Nome do aluno a ser registrado",
+            "example": "Denilson"
+          },
+          "idade": {
+            "type": "number",
+            "description": "Idade do aluno a ser registrado",
+            "example": 23
+          },
+          "notaSemestre1": {
+            "type": "number",
+            "description": "Nota do aluno no primeiro semestre",
+            "example": 10
+          },
+          "notaSemestre2": {
+            "type": "number",
+            "description": "Nota do aluno no segundo semestre",
+            "example": 10
+          },
+          "professor": {
+            "type": "string",
+            "description": "Nome do educador",
+            "example": "Bernardo"
+          },
+          "salaNumero": {
+            "type": "number",
+            "description": "Número da sala do aluno",
+            "example": 2
+          }
+        }
+      },
+      "ResponseCreatedAluno": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
