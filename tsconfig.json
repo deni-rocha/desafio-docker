@@ -17,7 +17,8 @@
     "noUnusedParameters": true,
     "noImplicitAny": false,
     "noImplicitThis": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "resolveJsonModule": true
   },
   "include": ["api/**/*.ts", "src/**/*.ts"],
   "exclude": ["node_modules", "public"]
