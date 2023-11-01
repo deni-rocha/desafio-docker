@@ -1,9 +1,9 @@
 export interface Aluno {
   ID: number
   nome: string
-  idade: string
-  nota1Semestre: string
-  nota2Semestre: string
+  idade: number
+  notaSemestre1: number
+  notaSemestre2: number
   professor: string
-  sala_numero: string
+  salaNumero: number
 }

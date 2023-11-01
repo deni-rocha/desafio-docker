@@ -1,9 +1,10 @@
 import "dotenv/config"
 import express from "express"
+import cors from "cors"
+import swaggerUi from "swagger-ui-express"
 
 import { loaders } from "../src/loaders/index"
-
-import cors from "cors"
+import swaggerDocument from "../swagger.json"
 
 // importação de rotas
 import aluno from "../src/routes/aluno"
@@ -17,6 +18,8 @@ app.use(cors())
 loaders.connect()
 
 // rotas
+app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 app.use("/api/aluno", aluno)
 
 // servidor

@@ -1,13 +1,12 @@
-import { Request, Response, Router } from "express"
+import { Router } from "express"
 import { aluno } from "../controllers/aluno.controller"
 
 const router = Router()
 
-router.post("/create", (_req: Request, res: Response) => {
-  aluno.create()
-  res.send({ name: "server online" })
-})
+router.post("/", aluno.create)
 
 router.get("/", aluno.getAll)
 
+router.get("/createTable", aluno.createTable)
+router.get("/deleteTable", aluno.deleteTable)
 export default router
