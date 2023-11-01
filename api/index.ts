@@ -1,15 +1,12 @@
 import "dotenv/config"
 import express from "express"
 
-import loaders from "../src/loaders/index"
+import { loaders } from "../src/loaders/index"
+
+import cors from "cors"
 
 // importação de rotas
-import usuario from "../src/routes/usuario"
-import servico from "../src/routes/servico"
-import agendamento from "../src/routes/agendamento"
-import horario from "../src/routes/horario"
-import colaborador from "../src/routes/colaborador"
-import cors from "cors"
+import aluno from "../src/routes/aluno"
 
 // configurações
 const app = express()
@@ -17,14 +14,10 @@ app.use(express.json())
 app.use(cors())
 
 // conectar banco de dados
-loaders.startDB()
+loaders.connect()
 
 // rotas
-app.use("/api/usuario", usuario)
-app.use("/api/colaborador", colaborador)
-app.use("/api/servico", servico)
-app.use("/api/agendamento", agendamento)
-app.use("/api/horario", horario)
+app.use("/api/aluno", aluno)
 
 // servidor
 const porta = process.env.PORT || 3030

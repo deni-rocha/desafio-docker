@@ -1,22 +1,21 @@
-import mongoose from "mongoose"
+import mysql, { Connection } from "mysql2"
 
-const dbUser = process.env.DB_USER
-const dbPassword = process.env.DB_PASS
+export const loaders = {
+  connect: (): Connection => {
+    // verifica se já existe uma conexão
+    const verifyConnectionExist = (): boolean =>
+      global.connection.connect((err: unknown) => {
+        if (err) return false
 
-const loaders = {
-  startDB: async (): Promise<void> => {
-    try {
-      mongoose.set("strictQuery", true)
+        return true
+      })
 
-      await mongoose.connect(
-        `mongodb+srv://${dbUser}:${dbPassword}@cluster0.sq7oujl.mongodb.net/barberST?retryWrites=true&w=majority`,
-      )
-
-      console.log("banco conectado")
-    } catch (error) {
-      console.log("banco não conectado", error)
+    if (global.connection && verifyConnectionExist()) {
+      return global.connection
     }
+
+    const connection = mysql.createConnection(process.env.DATABASE_URL)
+
+    return (global.connection = connection)
   },
 }
-
-export default loaders
