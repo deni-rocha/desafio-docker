@@ -5,7 +5,7 @@
     "lib": ["ES2022", "DOM"],
     "moduleResolution": "Node16",
     "rootDir": ".",
-    "outDir": "public",
+    "outDir": "dist",
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "alwaysStrict": true,

@@ -25,7 +25,7 @@
   },
   "scripts": {
     "dev": "nodemon --ext .ts --watch src --exec ts-node ./src/server.ts",
-    "start": "node ./public/src/server.js",
+    "start": "node ./dist/src/server.js",
     "prebuild": "npm run lint",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .ts --ext .mts",
