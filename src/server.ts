@@ -18,10 +18,10 @@ app.use(cors())
 loaders.connect()
 
 // rotas
-app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-app.use("/api/aluno", aluno)
+app.use("/aluno", aluno)
 
 // servidor
 const porta = process.env.PORT || 3030
-app.listen(porta, () => console.log(`http://localhost:${porta}`))
+app.listen(porta, () => console.log(`porta:${porta}`))

@@ -11,7 +11,7 @@
   },
   "paths": {
     "tags": ["Alunos"],
-    "/api/aluno/": {
+    "/aluno": {
       "get": {
         "description": "Obtém todos os alunos cadastrados",
         "responses": {
@@ -87,7 +87,7 @@
         }
       }
     },
-    "/api/aluno/{id}": {
+    "/aluno/{id}": {
       "get": {
         "description": "Obtém apenas um Aluno determinado pelo seu ID",
         "parameters": [
