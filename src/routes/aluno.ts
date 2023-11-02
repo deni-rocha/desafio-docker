@@ -3,10 +3,12 @@ import { aluno } from "../controllers/aluno.controller"
 
 const router = Router()
 
-router.post("/", aluno.create)
+router.post("/", aluno.create) // C
 
+router.get("/:id", aluno.getById) // R
 router.get("/", aluno.getAll)
 
-router.get("/createTable", aluno.createTable)
-router.get("/deleteTable", aluno.deleteTable)
+router.patch("/", aluno.update) // U
+router.delete("/:id", aluno.delete) // D
+
 export default router

@@ -21,7 +21,7 @@
 
 // connection.end()
 
-import { QueryError, QueryOptions } from "mysql2"
+import { QueryError, ResultSetHeader } from "mysql2"
 import { Request, Response } from "express"
 
 import { Aluno } from "../models/Aluno"
@@ -37,9 +37,8 @@ export const aluno = {
       salaNumero,
     }: Aluno = req.body
 
-    console.log(req)
     if (!nome) {
-      res.status(400).send({ msg: "necessário informar o nome" })
+      res.status(400).send({ message: "necessário informar o nome" })
       return
     }
 
@@ -47,17 +46,19 @@ export const aluno = {
 
     global.connection.query(
       queryCreate,
-      function (err: QueryError, results: QueryOptions) {
+      function (err: QueryError, results: ResultSetHeader) {
         if (err) throw err
 
-        console.log(results)
-        res.status(201).send({ message: "criado com sucesso", data: results })
+        res
+          .status(201)
+          .send({ message: "criado com sucesso", id: results.insertId })
       },
     )
   },
 
   getAll: (_req: Request, res: Response): void => {
     const queryGetAll = "SELECT * FROM Alunos"
+
     global.connection.query(
       queryGetAll,
       (err: QueryError, results: Aluno[]) => {
@@ -69,28 +70,100 @@ export const aluno = {
       },
     )
   },
-  deleteTable: (_req: Request, res: Response): void => {
-    const queryGetAll = "DROP TABLE Alunos"
-    global.connection.query(
-      queryGetAll,
-      (err: QueryError, results: unknown) => {
-        if (err) throw err
 
-        res.json(results)
+  getById: (req: Request, res: Response): void => {
+    const id = req.params.id
+
+    const query = `SELECT * FROM Alunos WHERE ID = ${id}`
+
+    global.connection.query(
+      query,
+      (_err: QueryError, result: Aluno[]): void => {
+        if (result.length === 0) {
+          res.status(204).send({ message: "Nenhum aluno foi encontrado" })
+          return
+        }
+
+        res.status(200).send(result)
       },
     )
   },
-  createTable: (_req: Request, res: Response): void => {
-    const createTableAlunos =
-      "CREATE TABLE Alunos (ID int NOT NULL AUTO_INCREMENT, nome VARCHAR(255), idade int, notaSemestre1 float, notaSemestre2 float, professor VARCHAR(255), salaNumero int, PRIMARY KEY (ID))"
+  update: (req: Request, res: Response): void => {
+    interface AlunoUpdate extends Aluno {
+      id: string
+    }
+
+    const {
+      id,
+      nome,
+      idade,
+      notaSemestre1,
+      notaSemestre2,
+      professor,
+      salaNumero,
+    }: AlunoUpdate = req.body
+
+    const query = `UPDATE Alunos SET nome = '${nome}', idade = '${idade}' , notaSemestre1 = '${notaSemestre1}', notaSemestre2 = '${notaSemestre2}', professor = '${professor}', salaNumero = '${salaNumero}'  WHERE ID = ${id}`
+
+    global.connection.query(query, (err: QueryError, results: unknown) => {
+      if (err) {
+        console.log(err)
+        res.status(400).send({
+          message: "os requisitos não foram cumpridos, verifique os campos",
+        })
+        return
+      }
+
+      res.status(200).send(results)
+    })
+  },
+  delete: (req: Request, res: Response): void => {
+    const id = req.params.id
+
+    const query = `DELETE FROM Alunos WHERE ID = ${id}`
 
     global.connection.query(
-      createTableAlunos,
-      (err: QueryError, results: unknown) => {
-        if (err) throw err
+      query,
+      (err: QueryError, result: ResultSetHeader): void => {
+        if (err) {
+          res.status(500).send("erro inesperado")
+          return
+        }
 
-        res.json(results)
+        if (result.affectedRows === 0) {
+          res
+            .status(204)
+            .send({ message: "Nenhum aluno foi encontrado, verifique o ID" })
+          return
+        }
+
+        res.status(200).send({ message: "aluno deletado com sucesso" })
       },
     )
   },
+
+  // deleteTable: (_req: Request, res: Response): void => {
+  //   const queryGetAll = "DROP TABLE Alunos"
+  //   global.connection.query(
+  //     queryGetAll,
+  //     (err: QueryError, results: unknown) => {
+  //       if (err) throw err
+
+  //       res.json(results)
+  //     },
+  //   )
+  // },
+  // createTable: (_req: Request, res: Response): void => {
+  //   const createTableAlunos =
+  //     "CREATE TABLE Alunos (ID int NOT NULL AUTO_INCREMENT, nome VARCHAR(255), idade int, notaSemestre1 float, notaSemestre2 float, professor VARCHAR(255), salaNumero int, PRIMARY KEY (ID))"
+
+  //   global.connection.query(
+  //     createTableAlunos,
+  //     (err: QueryError, results: unknown) => {
+  //       if (err) throw err
+
+  //       res.json(results)
+  //     },
+  //   )
+  // },
 }
