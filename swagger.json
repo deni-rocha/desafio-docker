@@ -22,7 +22,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RequestAluno"
+                    "$ref": "#/components/schemas/RequestCreateAluno"
                   }
                 }
               }
@@ -37,7 +37,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RequestAluno"
+                "$ref": "#/components/schemas/RequestCreateAluno"
               }
             }
           }
@@ -48,7 +48,35 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseCreatedAluno"
+                  "$ref": "#/components/schemas/ResponseCreateAluno"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Os requisitos de registro não foram atendidos, verifique os campos."
+          }
+        }
+      },
+      "patch": {
+        "description": "Atualizar dados de um aluno",
+        "requestBody": {
+          "description": "requisitos necessários para atualizar dados de um aluno",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestUpdateAluno"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseCreateAluno"
                 }
               }
             }
@@ -58,11 +86,65 @@
           }
         }
       }
+    },
+    "/api/aluno/{id}": {
+      "get": {
+        "description": "Obtém apenas um Aluno determinado pelo seu ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do aluno",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestCreateAluno"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Nenhum Aluno foi encontrado"
+          }
+        }
+      },
+      "delete": {
+        "description": "Deleta um Aluno pelo ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do aluno",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseCreateAluno"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Nenhum Aluno foi encontrado"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "RequestAluno": {
+      "RequestCreateAluno": {
         "type": "object",
         "properties": {
           "nome": {
@@ -97,9 +179,52 @@
           }
         }
       },
-      "ResponseCreatedAluno": {
+      "RequestUpdateAluno": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do Aluno que terá seus dados atualizados",
+            "example": "1"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do aluno a ser registrado",
+            "example": "Denilson"
+          },
+          "idade": {
+            "type": "number",
+            "description": "Idade do aluno a ser registrado",
+            "example": 23
+          },
+          "notaSemestre1": {
+            "type": "number",
+            "description": "Nota do aluno no primeiro semestre",
+            "example": 10
+          },
+          "notaSemestre2": {
+            "type": "number",
+            "description": "Nota do aluno no segundo semestre",
+            "example": 10
+          },
+          "professor": {
+            "type": "string",
+            "description": "Nome do educador",
+            "example": "Bernardo"
+          },
+          "salaNumero": {
+            "type": "number",
+            "description": "Número da sala do aluno",
+            "example": 2
+          }
+        }
+      },
+      "ResponseCreateAluno": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
           "id": {
             "type": "string"
           }
