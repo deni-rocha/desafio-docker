@@ -16,6 +16,12 @@ export const loaders = {
 
     const connection = mysql.createConnection(process.env.DATABASE_URL)
 
+    // cria uma tabela no banco de dados, apenas se essa tabela não existir
+    const createTableAlunos =
+      "CREATE TABLE IF NOT EXISTS Alunos (ID int NOT NULL AUTO_INCREMENT, nome VARCHAR(255), idade int, notaSemestre1 float, notaSemestre2 float, professor VARCHAR(255), salaNumero int, PRIMARY KEY (ID))"
+
+    connection.query(createTableAlunos)
+
     return (global.connection = connection)
   },
 }
