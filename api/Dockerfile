@@ -10,6 +10,6 @@ RUN npm install
 
 RUN npm run build
 
-CMD ./scripts/start.sh
+CMD npm run start
 
 EXPOSE 3030
