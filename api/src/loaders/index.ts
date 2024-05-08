@@ -14,7 +14,12 @@ export const loaders = {
       return global.connection
     }
 
-    const connection = mysql.createConnection(process.env.DATABASE_URL)
+    const connection = mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      database: process.env.DB_DATABASE,
+      password: process.env.DB_USER_PASSWORD,
+    })
 
     // cria uma tabela no banco de dados, apenas se essa tabela não existir
     const createTableAlunos =
